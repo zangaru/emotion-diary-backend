@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: emotion_diary_postgres
+    restart: always
+    environment:
+      # .env 파일과 일치해야 합니다.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: emotion_diary_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # 데이터 영속성을 위해 볼륨 사용
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
