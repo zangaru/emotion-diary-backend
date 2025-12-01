@@ -12,6 +12,12 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
+  /**
+   * 새로운 사용자를 생성한다.
+   * 
+   * @param createUserDto 
+   * @returns 
+   */
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { email, password } = createUserDto;
 
@@ -32,5 +38,25 @@ export class UserService {
     });
 
     return this.usersRepository.save(newUser);
+  }
+
+  /**
+   * 이메일로 사용자를 조회한다.
+   * 
+   * @param email 
+   * @returns 
+   */
+  async findOneByEmail(email: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: {email} });
+  }
+
+  /**
+   * ID로 사용자를 조회한다.
+   * 
+   * @param id 
+   * @returns 
+   */
+  async findOneById(id: number): Promise<User | null> {
+    return this.usersRepository.findOne({ where: {id} });
   }
 }

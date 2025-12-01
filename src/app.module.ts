@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'; // TypeORM 모듈 추가
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -34,7 +35,9 @@ import { UserModule } from './user/user.module';
     }),
     
     // User 모듈 등록
-    UserModule
+    UserModule,
+    
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
