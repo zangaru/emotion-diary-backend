@@ -4,5 +4,4 @@
     "source.fixAll.eslint": "explicit"
   },
   "editor.formatOnSave": true,
-  "prettier.printWidth": 200
 }

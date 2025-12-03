@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { DiaryModule } from './diary/diary.module';
 
 @Module({
   imports: [
@@ -16,28 +17,30 @@ import { AuthModule } from './auth/auth.module';
 
     // TypeORM 데이터베이스 연결 설정 (PostgreSQL)
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule], 
-      inject: [ConfigService], 
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        type: config.get<any>('DATABASE_TYPE'), 
+        type: config.get<any>('DATABASE_TYPE'),
         host: config.get<string>('DATABASE_HOST'),
         port: config.get<number>('DATABASE_PORT'),
         username: config.get<string>('DATABASE_USERNAME'),
         password: config.get<string>('DATABASE_PASSWORD'),
         database: config.get<string>('DATABASE_NAME'),
-        
+
         // 엔티티 자동 로드
-        autoLoadEntities: true, 
-        
+        autoLoadEntities: true,
+
         // 개발 단계에서 테이블 자동 생성/수정 (배포 시에는 false 처리하기)
-        synchronize: true, 
+        synchronize: true,
       }),
     }),
-    
+
     // User 모듈 등록
     UserModule,
-    
-    AuthModule
+
+    AuthModule,
+
+    DiaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
