@@ -1,25 +1,31 @@
-import { Controller, Post, Body, ValidationPipe, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, UseGuards, Get, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('users') 
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/register')
-  @HttpCode(201) 
-  async register(
-    @Body(ValidationPipe) createUserDto: CreateUserDto, 
-  ): Promise<{ message: string, user: User }> {
-    const user = await this.userService.create(createUserDto);
-    
-    // 비밀번호 정보는 응답에서 제외하고 전달 (보안)
-    const { password, ...result } = user; 
+  async register(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+    await this.userService.create(createUserDto);
+    return {
+      message: 'User registered successfully',
+      user: { email: createUserDto.email },
+    };
+  }
 
-    return { 
-        message: '회원가입이 성공적으로 완료되었습니다.',
-        user: result as User 
+  @UseGuards(AuthGuard('jwt')) // JWT 토큰이 유효한지 검증
+  @Get('/profile')
+  getProfile(@Req() req) {
+    return {
+      message: '인증되었습니다. 사용자 프로필 정보입니다.',
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        createdAt: req.user.createdAt,
+      },
     };
   }
 }
