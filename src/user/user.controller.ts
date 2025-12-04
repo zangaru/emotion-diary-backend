@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, UseGuards, Get, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -8,7 +8,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/register')
-  async register(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+  async register(@Body() createUserDto: CreateUserDto) {
     await this.userService.create(createUserDto);
     return {
       message: 'User registered successfully',

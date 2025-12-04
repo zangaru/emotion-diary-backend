@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // ConfigModule, ConfigService 추가
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UserModule } from 'src/user/user.module'; // UserModule import
+import { UserModule } from 'src/user/user.module';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -24,11 +25,7 @@ import { UserModule } from 'src/user/user.module'; // UserModule import
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
-  exports: [
-    AuthService,
-    PassportModule, 
-    JwtModule, // 다른 모듈에서 사용될 수 있도록 export
-  ],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService, PassportModule, JwtModule],
 })
 export class AuthModule {}

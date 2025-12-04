@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
 import { DiaryService } from './diary.service';
 import { CreateDiaryDto } from './dto/create-diary.dto';
 import { UpdateDiaryDto } from './dto/update-diary.dto';
@@ -17,7 +17,7 @@ export class DiaryController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body(ValidationPipe) createDiaryDto: CreateDiaryDto, @CurrentUser() user: User) {
+  create(@Body() createDiaryDto: CreateDiaryDto, @CurrentUser() user: User) {
     return this.diaryService.create(createDiaryDto, user);
   }
 
@@ -44,7 +44,7 @@ export class DiaryController {
    * PATCH /diaries/:id
    */
   @Patch(':id')
-  update(@Param('id') id: string, @Body(ValidationPipe) updateDiaryDto: UpdateDiaryDto, @CurrentUser() user: User) {
+  update(@Param('id') id: string, @Body() updateDiaryDto: UpdateDiaryDto, @CurrentUser() user: User) {
     return this.diaryService.update(+id, updateDiaryDto, user.id);
   }
 
