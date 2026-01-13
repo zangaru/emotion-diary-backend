@@ -36,7 +36,7 @@ export class DiaryService {
    */
   async findAll(userId: number): Promise<Diary[]> {
     return this.diaryRepository.find({
-      where: { userId },
+      where: { userId, deleteYn: false },
       order: { diaryDate: 'DESC' },
     });
   }
@@ -49,7 +49,7 @@ export class DiaryService {
    * @returns
    */
   async findOne(id: number, userId: number): Promise<Diary> {
-    const diary = await this.diaryRepository.findOne({ where: { id, userId } });
+    const diary = await this.diaryRepository.findOne({ where: { id, userId, deleteYn: false } });
 
     if (!diary) {
       throw new NotFoundException(`ID가 ${id}인 일기를 찾을 수 없거나 접근 권한이 없습니다.`);
@@ -80,8 +80,44 @@ export class DiaryService {
    * @param userId
    */
   async remove(id: number, userId: number): Promise<void> {
-    await this.findOne(id, userId);
+    const diary = await this.findOne(id, userId);
 
-    await this.diaryRepository.delete(id);
+    // 논리적 삭제
+    diary.deleteYn = true;
+
+    await this.diaryRepository.save(diary);
+  }
+
+  /**
+   * 특정 키워드로 일기 검색
+   *
+   * @param userId
+   * @param keyword
+   * @returns
+   */
+  async search(userId: number, keyword: string): Promise<Diary[]> {
+    return this.diaryRepository
+      .createQueryBuilder('diary')
+      .where('diary.userId = :userId', { userId })
+      .andWhere('diary.deleteYn = false')
+      .andWhere('(diary.title LIKE :keyword OR diary.content LIKE :keyword)', {
+        keyword: `%${keyword}%`,
+      })
+      .orderBy('diary.diaryDate', 'DESC')
+      .getMany();
+  }
+
+  /**
+   * 감정별 필터링
+   *
+   * @param userId
+   * @param emotion
+   * @returns
+   */
+  async findByEmotion(userId: number, emotion: string): Promise<Diary[]> {
+    return this.diaryRepository.find({
+      where: { userId, emotion, deleteYn: false },
+      order: { diaryDate: 'DESC' },
+    });
   }
 }

@@ -24,7 +24,7 @@ export class Diary {
   @Column({ length: 20, nullable: false })
   emotion!: string;
 
-  // 일기가 작성된 날짜 (사용자가 선택한 날짜)
+  // 일기가 작성된 날짜
   @Column({ type: 'date', nullable: false })
   diaryDate!: Date;
 
@@ -35,9 +35,12 @@ export class Diary {
   @JoinColumn({ name: 'userId' })
   user!: User;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @Column({ type: 'boolean', default: false })
+  deleteYn!: boolean;
+
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date;
 }
