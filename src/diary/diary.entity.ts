@@ -28,6 +28,10 @@ export class Diary {
   @Column({ type: 'date', nullable: false })
   diaryDate!: Date;
 
+  // 날씨 정보
+  @Column({ nullable: true })
+  weather!: string;
+
   @Column()
   userId!: number;
 

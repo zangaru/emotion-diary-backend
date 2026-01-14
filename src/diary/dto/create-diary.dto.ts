@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, IsString, IsDateString } from 'class-validator';
+import { IsNotEmpty, Length, IsString, IsDateString, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateDiaryDto {
   @IsNotEmpty({ message: '제목은 필수 항목입니다.' })
@@ -18,4 +18,16 @@ export class CreateDiaryDto {
   @IsNotEmpty({ message: '작성일자는 필수 항목입니다.' })
   @IsDateString({}, { message: '날짜는 유효한 날짜 형식(YYYY-MM-DD)이어야 합니다.' })
   diaryDate!: Date;
+
+  @IsOptional()
+  @IsNumber()
+  lat?: number;
+
+  @IsOptional()
+  @IsNumber()
+  lon?: number;
+
+  @IsOptional()
+  @IsString()
+  weather?: string;
 }

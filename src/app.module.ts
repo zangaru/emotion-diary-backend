@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DiaryModule } from './diary/diary.module';
+import { WeatherModule } from './weather/weather.module';
 
 @Module({
   imports: [
@@ -35,12 +36,10 @@ import { DiaryModule } from './diary/diary.module';
       }),
     }),
 
-    // User 모듈 등록
     UserModule,
-
     AuthModule,
-
     DiaryModule,
+    WeatherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
