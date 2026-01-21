@@ -31,6 +31,15 @@ export class DiaryController {
   }
 
   /**
+   * [GET] 특정 날짜의 일기 조회
+   * GET /diaries/date/:date
+   */
+  @Get('date/:date')
+  findByDate(@Param('date') date: string, @CurrentUser() user: User) {
+    return this.diaryService.findByDate(user.id, new Date(date));
+  }
+
+  /**
    * [GET] 특정 일기 ID로 조회
    * GET /diaries/:id
    */

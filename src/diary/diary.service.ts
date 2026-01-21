@@ -120,4 +120,18 @@ export class DiaryService {
       order: { diaryDate: 'DESC' },
     });
   }
+
+  /**
+   * 특정 날짜의 일기 조회
+   *
+   * @param userId
+   * @param diaryDate
+   * @returns
+   */
+  async findByDate(userId: number, diaryDate: Date): Promise<Diary[]> {
+    return this.diaryRepository.find({
+      where: { userId, diaryDate, deleteYn: false },
+      order: { createdAt: 'DESC' },
+    });
+  }
 }
