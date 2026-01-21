@@ -40,6 +40,15 @@ export class DiaryController {
   }
 
   /**
+   * [GET] 감정 통계 조회
+   * GET /diaries/stats
+   */
+  @Get('stats')
+  getStats(@CurrentUser() user: User) {
+    return this.diaryService.getStats(user.id);
+  }
+
+  /**
    * [GET] 특정 일기 ID로 조회
    * GET /diaries/:id
    */
